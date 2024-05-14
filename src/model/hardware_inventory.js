@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const articleSchema = new mongoose.Schema({
+const inventorySchema = new mongoose.Schema({
     Item_Holder: {
         type: String,
         required: true,
@@ -565,4 +565,4 @@ const articleSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model("hardware_inventory", articleSchema);
+module.exports = mongoose.model("hardware_inventory", inventorySchema);

@@ -23,6 +23,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/login", loginrouter);
-app.use("/hi", mainrouter);
+app.use("/triage", mainrouter);
 
 app.listen(port);

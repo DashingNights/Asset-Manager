@@ -1,0 +1,114 @@
+<form id="inventoryForm" method="POST" action="/api/inventory">
+	<h2>Inventory Form</h2>
+
+	<h3>Item Holder</h3>
+	<input type="text" name="Item_Holder" value="<%= inventory ? inventory.Item_Holder : 'Default Holder' %>" />
+
+	<% ['Computer_1', 'Computer_2', 'Computer_3'].forEach(function(computer) { %>
+	<h3><%= computer %></h3>
+	<input type="checkbox" name="<%= computer %>[IsUsed]" value="true" <%= inventory && inventory[computer].IsUsed ? 'checked' : '' %>> Is Used<br />
+	<input type="text" name="<%= computer %>[Vendor]" value="<%= inventory ? inventory[computer].Vendor : 'Default Vendor' %>" /> Vendor<br />
+	<input type="text" name="<%= computer %>[Brand]" value="<%= inventory ? inventory[computer].Brand : 'Default Brand' %>" /> Brand<br />
+	<input type="number" name="<%= computer %>[Price]" value="<%= inventory ? inventory[computer].Price : 0 %>" /> Price<br />
+	<input type="date" name="<%= computer %>[Dates][Purchased]" value="<%= inventory ? inventory[computer].Dates.Purchased : '' %>" /> Purchased Date<br />
+	<input type="date" name="<%= computer %>[Dates][Warranty_End]" value="<%= inventory ? inventory[computer].Dates.Warranty_End : '' %>" /> Warranty End Date<br />
+	<input type="text" name="<%= computer %>[Model]" value="<%= inventory ? inventory[computer].Model : 'Default Model' %>" /> Model<br />
+	<input type="text" name="<%= computer %>[Serial_Number]" value="<%= inventory ? inventory[computer].Serial_Number : 'Default Serial Number' %>" /> Serial Number<br />
+	<input type="text" name="<%= computer %>[Asset_ID]" value="<%= inventory ? inventory[computer].Asset_ID : 'Default Asset ID' %>" /> Asset ID<br />
+	<input type="text" name="<%= computer %>[PC_ID]" value="<%= inventory ? inventory[computer].PC_ID : 'Default PC ID' %>" /> PC ID<br />
+
+	<h4>CPU</h4>
+	<input type="text" name="<%= computer %>[CPU][Model]" value="<%= inventory ? inventory[computer].CPU.Model : 'Default CPU Model' %>" /> Model<br />
+	<input type="number" name="<%= computer %>[CPU][Speed]" value="<%= inventory ? inventory[computer].CPU.Speed : 0 %>" /> Speed<br />
+
+	<h4>RAM</h4>
+	<input type="number" name="<%= computer %>[RAM][Size]" value="<%= inventory ? inventory[computer].RAM.Size : 0 %>" /> Size<br />
+	<input type="text" name="<%= computer %>[RAM][Type]" value="<%= inventory ? inventory[computer].RAM.Type : 'Default RAM Type' %>" /> Type<br />
+	<input type="number" name="<%= computer %>[RAM][Speed]" value="<%= inventory ? inventory[computer].RAM.Speed : 0 %>" /> Speed<br />
+
+	<h4>Storage</h4>
+	<input type="text" name="<%= computer %>[Storage][Disk_1][Type]" value="<%= inventory ? inventory[computer].Storage.Disk_1.Type : 'Default Disk Type' %>" /> Disk 1 Type<br />
+	<input type="number" name="<%= computer %>[Storage][Disk_1][Size]" value="<%= inventory ? inventory[computer].Storage.Disk_1.Size : 0 %>" /> Disk 1 Size<br />
+
+	<input type="text" name="<%= computer %>[Storage][Disk_2][Type]" value="<%= inventory ? inventory[computer].Storage.Disk_2.Type : 'Default Disk Type' %>" /> Disk 2 Type<br />
+	<input type="number" name="<%= computer %>[Storage][Disk_2][Size]" value="<%= inventory ? inventory[computer].Storage.Disk_2.Size : 0 %>" /> Disk 2 Size<br />
+
+	<input type="text" name="<%= computer %>[Storage][Disk_3][Type]" value="<%= inventory ? inventory[computer].Storage.Disk_3.Type : 'Default Disk Type' %>" /> Disk 3 Type<br />
+	<input type="number" name="<%= computer %>[Storage][Disk_3][Size]" value="<%= inventory ? inventory[computer].Storage.Disk_3.Size : 0 %>" /> Disk 3 Size<br />
+	<input type="checkbox" name="<%= computer %>[Optical_Drive]" value="true" <%= inventory && inventory[computer].Optical_Drive ? 'checked' : '' %>> Optical Drive<br />
+
+	<h4>OS</h4>
+	<input type="checkbox" name="<%= computer %>[OS][Preloaded]" value="true" <%= inventory && inventory[computer].OS.Preloaded ? 'checked' : '' %>> Preloaded<br />
+	<input type="text" name="<%= computer %>[OS][Platform]" value="<%= inventory ? inventory[computer].OS.Platform : 'Default Platform' %>" /> Platform<br />
+	<input type="text" name="<%= computer %>[OS][Version]" value="<%= inventory ? inventory[computer].OS.Version : 'Default Version' %>" /> Version<br />
+
+	<input type="text" name="<%= computer %>[Hostname]" value="<%= inventory ? inventory[computer].Hostname : 'Default Hostname' %>" /> Hostname<br />
+	<input type="text" name="<%= computer %>[Remarks]" value="<%= inventory ? inventory[computer].Remarks : 'Default Remarks' %>" /> Remarks<br />
+	<% }); %> <% ['Monitor_1', 'Monitor_2', 'Monitor_3'].forEach(function(monitor) { %>
+	<h3><%= monitor %></h3>
+	<input type="checkbox" name="<%= monitor %>[IsUsed]" value="true" <%= inventory && inventory[monitor].IsUsed ? 'checked' : '' %>> Is Used<br />
+	<input type="text" name="<%= monitor %>[Vendor]" value="<%= inventory ? inventory[monitor].Vendor : 'Default Vendor' %>" /> Vendor<br />
+	<input type="text" name="<%= monitor %>[Brand]" value="<%= inventory ? inventory[monitor].Brand : 'Default Brand' %>" /> Brand<br />
+	<input type="number" name="<%= monitor %>[Price]" value="<%= inventory ? inventory[monitor].Price : 0 %>" /> Price<br />
+	<input type="date" name="<%= monitor %>[Dates][Purchased]" value="<%= inventory ? inventory[monitor].Dates.Purchased : '' %>" /> Purchased Date<br />
+	<input type="date" name="<%= monitor %>[Dates][Warranty_End]" value="<%= inventory ? inventory[monitor].Dates.Warranty_End : '' %>" /> Warranty End Date<br />
+	<input type="text" name="<%= monitor %>[Model]" value="<%= inventory ? inventory[monitor].Model : 'Default Model' %>" /> Model<br />
+	<input type="text" name="<%= monitor %>[Serial_Number]" value="<%= inventory ? inventory[monitor].Serial_Number : 'Default Serial Number' %>" /> Serial Number<br />
+	<input type="text" name="<%= monitor %>[Asset_ID]" value="<%= inventory ? inventory[monitor].Asset_ID : 'Default Asset ID' %>" /> Asset ID<br />
+	<input type="text" name="<%= monitor %>[Monitor_ID]" value="<%= inventory ? inventory[monitor].Monitor_ID : 'Default Monitor ID' %>" /> Monitor ID<br />
+	<input type="number" name="<%= monitor %>[Size]" value="<%= inventory ? inventory[monitor].Size : 0 %>" /> Size<br />
+	<input type="text" name="<%= monitor %>[Resolution]" value="<%= inventory ? inventory[monitor].Resolution : 'Default Resolution' %>" /> Resolution<br />
+	<input type="text" name="<%= monitor %>[Remarks]" value="<%= inventory ? inventory[monitor].Remarks : 'Default Remarks' %>" /> Remarks<br />
+	<% }); %>
+
+	<input type="submit" value="Submit" />
+</form>
+
+<script>
+	document.getElementById("inventoryForm").addEventListener("submit", function (event) {
+		event.preventDefault();
+
+		var formData = new FormData(this);
+		var jsonData = {};
+
+		for (var pair of formData.entries()) {
+			var key = pair[0].split("[");
+			var value = pair[1];
+
+			var obj = jsonData;
+			for (var i = 0; i < key.length; i++) {
+				var k = key[i].replace("]", "");
+
+				if (i === key.length - 1) {
+					obj[k] = value;
+				} else {
+					if (!obj[k]) {
+						obj[k] = {};
+					}
+					obj = obj[k];
+				}
+			}
+		}
+
+		fetch(this.action, {
+			method: this.method,
+			body: JSON.stringify(jsonData),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then(function (response) {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error("Failed to submit form");
+				}
+			})
+			.then(function (data) {
+				console.log(data);
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+	});
+</script>

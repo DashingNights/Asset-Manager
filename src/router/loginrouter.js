@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     try {
         const loginSuccessful = fastAuth(req, res, username, password);
         if (loginSuccessful) {
-            res.redirect("/hi");
+            res.redirect("/triage");
         } else {
             res.redirect("/login");
         }
