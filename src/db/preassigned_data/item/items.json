@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "PC": [
+        "TLTPC001",
+        "TLTPC002",
+        "TLTPC003",
+        "TLTPC004",
+        "TLTPC005",
+        "TLTPC006",
+        "TLTPC007",
+        "TLTPC008",
+        "TLTPC009",
+        "TLTPC010"
+    ] ,
+    "MONITOR": [
+        "MON001",
+        "MON002",
+        "MON003",
+        "MON004",
+        "MON005",
+        "MON006",
+        "MON007",
+        "MON008",
+        "MON009",
+        "MON010"
+    ]
+}
