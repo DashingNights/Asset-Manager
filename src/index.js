@@ -23,6 +23,8 @@ mongoose
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
