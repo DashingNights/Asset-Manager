@@ -11,10 +11,4 @@ const user = new mongoose.Schema({
 	},
 });
 
-let userModel;
-try {
-	userModel = mongoose.model("users");
-} catch (error) {
-	userModel = mongoose.model("users", user);
-}
-module.exports = userModel;
+module.exports = mongoose.model("users", user);

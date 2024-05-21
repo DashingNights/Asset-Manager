@@ -16,7 +16,8 @@
                     <br>
                         
                         <!-- redirect to /triage/data_editing -->
-                        <button class="btn btn-primary dedit">Data Editing</button>
+                        <button class="btn btn-primary dedit">Edit items</button>
+                        <button class="btn btn-primary ai">Add items</button>
 
                         <!-- <button class="btn btn-success">Datasheet Importing</button>
                         <button class="btn btn-secondary">Datasheet Exporting</button> -->
@@ -25,6 +26,9 @@
 	</body>
     <script>
         document.querySelector('.dedit').addEventListener('click', function() {
+            window.location.href = '/triage/edit-items-triage';
+        });
+        document.querySelector('.ai').addEventListener('click', function() {
             window.location.href = '/triage/data-edit-triage';
         });
     </script>

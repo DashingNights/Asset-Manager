@@ -130,7 +130,6 @@ const pc = new mongoose.Schema(
 			type: String,
 		},
 	},
-	{ strict: false }
 );
 
 module.exports = mongoose.model("pcs", pc);

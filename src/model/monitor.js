@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const user = new mongoose.Schema(
+const monitor = new mongoose.Schema(
 	{
         Item_Holder: {
             type: String,
@@ -48,7 +48,6 @@ const user = new mongoose.Schema(
 			type: String,
 		},
 	},
-	{ strict: false }
 );
 
-module.exports = mongoose.model("users", user);
+module.exports = mongoose.model("monitors", monitor);

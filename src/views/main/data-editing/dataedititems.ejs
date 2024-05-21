@@ -16,9 +16,9 @@
                     <br>
                         
                         <!-- redirect to /triage/data_editing -->
-                        <button class="btn btn-primary Users">Add new User</button>
-                        <button class="btn btn-primary Pcs">Add new PC</button>
-                        <button class="btn btn-primary Monitors">Add new Monitor</button>
+                        <button class="btn btn-primary Users">Edit Users</button>
+                        <button class="btn btn-primary Pcs">Edit PCs</button>
+                        <button class="btn btn-primary Monitors">Edit Monitors</button>
                         
 
 
@@ -36,7 +36,7 @@
 	</body>
     <script>
         document.querySelector('.Users').addEventListener('click', function() {
-            window.location.href = '/api/inventory/newuser';
+            window.location.href = '/api/inventory/';
         });
         document.querySelector('.Pcs').addEventListener('click', function() {
             window.location.href = '/api/inventory/newpc';

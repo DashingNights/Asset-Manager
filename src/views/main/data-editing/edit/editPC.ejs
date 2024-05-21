@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<form id="inventoryForm" method="POST" action="/api/inventory/editpc/new">
+			<form id="inventoryForm" method="POST" action="/api/inventory/editpc/<%= pc._id %>?_method=PUT">
 				<h2>New PC Form</h2>
 
 				<div class="form-group">
@@ -52,6 +52,12 @@
 
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
+			<button class="btn btn-secondary dedit">Back</button>
+                        <script>
+                            document.querySelector('.dedit').addEventListener('click', function() {
+                                window.location.href = '/triage/data-edit-triage';
+                            });
+                        </script>
 		</div>
 
 		<!-- Bootstrap JS and jQuery -->

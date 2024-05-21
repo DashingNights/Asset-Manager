@@ -7,13 +7,11 @@ router.get("/", (req, res) => {
     // res.render("loginpage");
     res.render("main/index")
 });
+router.get("/edit-items-triage", (req, res) => {
+    res.render("main/data-editing/dataedititems");
+});
 router.get("/data-edit-triage", (req, res) => {
     res.render("main/data-editing/dataEditTriage");
-});
-router.get("/data-editing", (req, res) => {
-    res.render("main/data-editing/index", {
-        inventory: inventory
-    });
 });
 
 module.exports = router;
