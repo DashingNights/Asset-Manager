@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Inventory Form</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+	</head>
+	<body>
+		<div class="container">
+			<h3>User List</h3>
+			<%- include('../../components/_searchbar') %> 
+            <% users.forEach(function(user) { %>
+			<div class="card mb-3">
+				<div class="row g-0">
+					<div class="col-md-3">
+						<div class="card-body">
+							<h5 class="card-itemholder"><%= user.Item_Holder %></h5>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="card-body">
+							<p class="card-email">Email: <%= user.email %></p>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="card-body">
+							<p class="card-oid">ID: <%= user._id %></p>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="card-body">
+							<a href="/api/inventory/edituser/<%= user._id %>" class="btn btn-primary">Edit</a>
+							<!-- <a href="/api/inventory/deleteuser/<%= user._id %>" class="btn btn-danger">Delete</a> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<% }); %>
+			<button class="btn btn-secondary dedit">Back</button>
+			<script>
+				document.querySelector(".dedit").addEventListener("click", function () {
+					window.location.href = "/triage/edit-items-triage";
+				});
+
+				const searchInput = document.getElementById("search");
+				const articles = document.querySelectorAll(".card");
+
+				searchInput.addEventListener("input", () => {
+					const searchQuery = searchInput.value.toLowerCase();
+
+					articles.forEach((article) => {
+						const title = article.querySelector(".card-itemholder").textContent.toLowerCase();
+						const content = article.querySelector(".card-email").textContent.toLowerCase();
+						const hashtags = article.querySelector(".card-oid").textContent.toLowerCase();
+
+						if (title.includes(searchQuery) || content.includes(searchQuery) || hashtags.includes(searchQuery)) {
+							article.style.display = "block";
+						} else {
+							article.style.display = "none";
+						}
+					});
+				});
+			</script>
+		</div>
+	</body>
+</html>

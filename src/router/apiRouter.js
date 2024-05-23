@@ -16,7 +16,7 @@ router.get("/inventory/newpc", async (req, res, next) => {
 router.post("/inventory/newpc", async (req, res, next) => {
 	const item = new PcInventory({
 		Item_Holder: req.body.Item_Holder,
-		IsUsed: req.body.IsUsed,
+		IsUsed: req.body.IsUsed === "true" ? true : false,
 		Vendor: req.body.Vendor,
 		Brand: req.body.Brand,
 		Price: req.body.Price,
@@ -55,9 +55,9 @@ router.post("/inventory/newpc", async (req, res, next) => {
 				Size: req.body.StorageDisk_4Size,
 			},
 		},
-		Optical_Drive: req.body.Optical_Drive,
+		Optical_Drive: req.body.Optical_Drive === "true" ? true : false,
 		OS: {
-			Preloaded: req.body.OSPreloaded,
+			Preloaded: req.body.OSPreloaded === "true" ? true : false,
 			Platform: req.body.OSPlatform,
 			Version: req.body.OSVersion,
 		},
@@ -77,13 +77,23 @@ router.get("/inventory/editpc/:id", async (req, res, next) => {
 		res.send("Error fetching item");
 	}
 });
-router.put("/inventory/editpc/:id", async (req, res, next) => {
-	req.pc = await PcInventory.findById(req.params.id);
-	next();
-},
-saveAndRedirect("pc")
+router.put(
+	"/inventory/editpc/:id",
+	async (req, res, next) => {
+		req.pc = await PcInventory.findById(req.params.id);
+		next();
+	},
+	saveAndRedirect("pc")
 );
-
+router.get("/inventory/pclist", async (req, res, next) => {
+	try {
+		const items = await PcInventory.find();
+		res.render("main/data-editing/pclist", { pcs: items });
+	} catch (err) {
+		console.error(err);
+		res.send("Error fetching items");
+	}
+});
 
 router.get("/inventory/newuser", async (req, res, next) => {
 	res.render("main/data-editing/new/newUser", { user: new UserInventory() });
@@ -106,14 +116,23 @@ router.get("/inventory/edituser/:id", async (req, res, next) => {
 		res.send("Error fetching item");
 	}
 });
-router.put("/inventory/edituser/:id", async (req, res, next) => {
+router.put(
+	"/inventory/edituser/:id",
+	async (req, res, next) => {
 		req.user = await UserInventory.findById(req.params.id);
 		next();
 	},
 	saveAndRedirect("user")
 );
-
-
+router.get("/inventory/userlist", async (req, res, next) => {
+	try {
+		const items = await UserInventory.find();
+		res.render("main/data-editing/userlist", { users: items });
+	} catch (err) {
+		console.error(err);
+		res.send("Error fetching items");
+	}
+});
 
 router.get("/inventory/newmonitor", async (req, res, next) => {
 	res.render("main/data-editing/new/newMonitor", { monitor: new MonitorInventory() });
@@ -121,7 +140,7 @@ router.get("/inventory/newmonitor", async (req, res, next) => {
 router.post("/inventory/newmonitor", async (req, res, next) => {
 	const item = new MonitorInventory({
 		Item_Holder: req.body.Item_Holder,
-		IsUsed: req.body.IsUsed,
+		IsUsed: req.body.IsUsed === "true" ? true : false,
 		Vendor: req.body.Vendor,
 		Brand: req.body.Brand,
 		Price: req.body.Price,
@@ -150,11 +169,13 @@ router.get("/inventory/editmonitor/:id", async (req, res, next) => {
 		res.send("Error fetching item");
 	}
 });
-router.put("/inventory/editmonitor/:id", async (req, res, next) => {
-	req.monitor = await MonitorInventory.findById(req.params.id);
-	next();
-},
-saveAndRedirect("monitor")
+router.put(
+	"/inventory/editmonitor/:id",
+	async (req, res, next) => {
+		req.monitor = await MonitorInventory.findById(req.params.id);
+		next();
+	},
+	saveAndRedirect("monitor")
 );
 
 function newAndRedirect(savetype) {
@@ -171,7 +192,7 @@ function newAndRedirect(savetype) {
 					try {
 						let user = await UserInventory.save();
 						if (user) {
-							res.redirect('/api/inventory/newuser')
+							res.redirect("/api/inventory/newuser");
 						}
 					} catch (err) {
 						console.error(err);
@@ -182,7 +203,7 @@ function newAndRedirect(savetype) {
 				{
 					let PcInventory = req.pc;
 					PcInventory.Item_Holder = req.body.Item_Holder;
-					PcInventory.IsUsed = req.body.IsUsed;
+					PcInventory.IsUsed = req.body.IsUsed === "true";
 					PcInventory.Vendor = req.body.Vendor;
 					PcInventory.Brand = req.body.Brand;
 					PcInventory.Price = req.body.Price;
@@ -207,8 +228,8 @@ function newAndRedirect(savetype) {
 					PcInventory.Storage.Disk_4.Type = req.body.StorageDisk_4Type;
 					PcInventory.Storage.Disk_4.Size = req.body.StorageDisk_4Size;
 
-					PcInventory.Optical_Drive = req.body.Optical_Drive;
-					PcInventory.OS.Preloaded = req.body.OSPreloaded;
+					PcInventory.Optical_Drive = req.body.Optical_Drive === "true";
+					PcInventory.OS.Preloaded = req.body.OSPreloaded === "true";
 					PcInventory.OS.Platform = req.body.OSPlatform;
 					PcInventory.OS.Version = req.body.OSVersion;
 					PcInventory.Hostname = req.body.Hostname;
@@ -217,8 +238,7 @@ function newAndRedirect(savetype) {
 					try {
 						let pc = await PcInventory.save();
 						if (pc) {
-							res.redirect('/api/inventory/newpc')
-
+							res.redirect("/api/inventory/newpc");
 						}
 					} catch (err) {
 						console.error(err);
@@ -229,7 +249,7 @@ function newAndRedirect(savetype) {
 				{
 					let MonitorInventory = req.monitor;
 					MonitorInventory.Item_Holder = req.body.Item_Holder;
-					MonitorInventory.IsUsed = req.body.IsUsed;
+					MonitorInventory.IsUsed = req.body.IsUsed === "true";
 					MonitorInventory.Vendor = req.body.Vendor;
 					MonitorInventory.Brand = req.body.Brand;
 					MonitorInventory.Price = req.body.Price;
@@ -245,8 +265,7 @@ function newAndRedirect(savetype) {
 					try {
 						let monitor = await MonitorInventory.save();
 						if (monitor) {
-							res.redirect('/api/inventory/newmonitor')
-
+							res.redirect("/api/inventory/newmonitor");
 						}
 					} catch (err) {
 						console.error(err);
@@ -272,7 +291,7 @@ function saveAndRedirect(savetype) {
 					try {
 						let user = await UserInventory.findByIdAndUpdate(req.body.id, userData, { new: true });
 						if (user) {
-							res.redirect('/triage/data-edit-triage')
+							res.redirect("/triage/data-edit-triage");
 						} else {
 						}
 					} catch (err) {
@@ -284,7 +303,7 @@ function saveAndRedirect(savetype) {
 				{
 					const pcData = {
 						Item_Holder: req.body.Item_Holder,
-						IsUsed: req.body.IsUsed,
+						IsUsed: req.body.IsUsed === "true" ? true : false,
 						Vendor: req.body.Vendor,
 						Brand: req.body.Brand,
 						Price: req.body.Price,
@@ -323,9 +342,9 @@ function saveAndRedirect(savetype) {
 								Size: req.body.StorageDisk_4Size,
 							},
 						},
-						Optical_Drive: req.body.Optical_Drive,
+						Optical_Drive: req.body.Optical_Drive === "true" ? true : false,
 						OS: {
-							Preloaded: req.body.OSPreloaded,
+							Preloaded: req.body.OSPreloaded === "true" ? true : false,
 							Platform: req.body.OSPlatform,
 							Version: req.body.OSVersion,
 						},
@@ -335,8 +354,7 @@ function saveAndRedirect(savetype) {
 					try {
 						let pc = await PcInventory.findByIdAndUpdate(req.body.id, pcData, { new: true });
 						if (pc) {
-							res.redirect('/triage/data-edit-triage')
-
+							res.redirect("/triage/data-edit-triage");
 						} else {
 						}
 					} catch (err) {
@@ -348,7 +366,7 @@ function saveAndRedirect(savetype) {
 				{
 					const monitorData = {
 						Item_Holder: req.body.Item_Holder,
-						IsUsed: req.body.IsUsed,
+						IsUsed: req.body.IsUsed === "true" ? true : false,
 						Vendor: req.body.Vendor,
 						Brand: req.body.Brand,
 						Price: req.body.Price,
@@ -367,7 +385,7 @@ function saveAndRedirect(savetype) {
 					try {
 						let monitor = await MonitorInventory.findByIdAndUpdate(req.body.id, monitorData, { new: true });
 						if (monitor) {
-							res.redirect('/triage/data-edit-triage')
+							res.redirect("/triage/data-edit-triage");
 						} else {
 						}
 					} catch (err) {
@@ -379,238 +397,6 @@ function saveAndRedirect(savetype) {
 				// handle unrecognized type
 				throw new Error(`Unrecognized type: ${type}`);
 		}
-		// let article = req.article;
-		// article.author = req.body.author;
-		// article.title = Buffer.from(req.body.title).toString("base64");
-		// article.description = req.body.description;
-		// article.hashtags = req.body.hashtags;
-		// article.type = req.body.type;
-		// article.contentType = req.body["content-type"];
-		// if (article.contentType === "video") {
-		// 	const youtubeUrl = req.body["youtube-url"];
-		// 	const youtubeEmbedUrl = youtubeUrl.replace("watch?v=", "embed/");
-		// 	article.youtubeUrl = youtubeEmbedUrl;
-		// } else {
-		// 	article.markdown = req.body.markdown;
-		// }
-		// try {
-		// 	article = await article.save();
-		// 	res.redirect(`/articles/${article.slug}`);
-		// } catch (e) {
-		// 	console.error(e);
-		// 	res.redirect("/oopsies")
-		// }
 	};
 }
 module.exports = router;
-
-// const inventoryform = new Inventory({
-// 	Item_Holder: req.body.Item_Holder,
-// 	Computer_1: {
-// 		IsUsed: req.body.Computer_1IsUsed,
-// 		Vendor: req.body.Computer_1Vendor,
-// 		Brand: req.body.Computer_1Brand,
-// 		Price: req.body.Computer_1Price,
-// 		Dates: {
-// 			Purchased: req.body.Computer_1DatesPurchased,
-// 			Warranty_End: req.body.Computer_1DatesWarranty_End,
-// 		},
-// 		Model: req.body.Computer_1Model,
-// 		Serial_Number: req.body.Computer_1Serial_Number,
-// 		Asset_ID: req.body.Computer_1Asset_ID,
-// 		PC_ID: req.body.Computer_1PC_ID,
-// 		CPU: {
-// 			Model: req.body.Computer_1CPUModel,
-// 			Speed: req.body.Computer_1CPUSpeed,
-// 		},
-// 		RAM: {
-// 			Size: req.body.Computer_1RAMSize,
-// 			Type: req.body.Computer_1RAMType,
-// 			Speed: req.body.Computer_1RAMSpeed,
-// 		},
-// 		Storage: {
-// 			Disk_1: {
-// 				Type: req.body.Computer_1StorageDisk_1Type,
-// 				Size: req.body.Computer_1StorageDisk_1Size,
-// 			},
-// 			Disk_2: {
-// 				Type: req.body.Computer_1StorageDisk_2Type,
-// 				Size: req.body.Computer_1StorageDisk_2Size,
-// 			},
-// 			Disk_3: {
-// 				Type: req.body.Computer_1StorageDisk_3Type,
-// 				Size: req.body.Computer_1StorageDisk_3Size,
-// 			},
-// 			Disk_4: {
-// 				Type: req.body.Computer_1StorageDisk_4Type,
-// 				Size: req.body.Computer_1StorageDisk_4Size,
-// 			},
-// 		},
-// 		Optical_Drive: req.body.Computer_1Optical_Drive,
-// 		OS: {
-// 			Preloaded: req.body.Computer_1OSPreloaded,
-// 			Platform: req.body.Computer_1OSPlatform,
-// 			Version: req.body.Computer_1OSVersion,
-// 		},
-// 		Hostname: req.body.Computer_1Hostname,
-// 		Remarks: req.body.Computer_1Remarks,
-// 	},
-// 	Computer_2: {
-// 		IsUsed: req.body.Computer_2IsUsed,
-// 		Vendor: req.body.Computer_2Vendor,
-// 		Brand: req.body.Computer_2Brand,
-// 		Price: req.body.Computer_2Price,
-// 		Dates: {
-// 			Purchased: req.body.Computer_2DatesPurchased,
-// 			Warranty_End: req.body.Computer_2DatesWarranty_End,
-// 		},
-// 		Model: req.body.Computer_2Model,
-// 		Serial_Number: req.body.Computer_2Serial_Number,
-// 		Asset_ID: req.body.Computer_2Asset_ID,
-// 		PC_ID: req.body.Computer_2PC_ID,
-// 		CPU: {
-// 			Model: req.body.Computer_2CPUModel,
-// 			Speed: req.body.Computer_2CPUSpeed,
-// 		},
-// 		RAM: {
-// 			Size: req.body.Computer_2RAMSize,
-// 			Type: req.body.Computer_2RAMType,
-// 			Speed: req.body.Computer_2RAMSpeed,
-// 		},
-// 		Storage: {
-// 			Disk_1: {
-// 				Type: req.body.Computer_2StorageDisk_1Type,
-// 				Size: req.body.Computer_2StorageDisk_1Size,
-// 			},
-// 			Disk_2: {
-// 				Type: req.body.Computer_2StorageDisk_2Type,
-// 				Size: req.body.Computer_2StorageDisk_2Size,
-// 			},
-// 			Disk_3: {
-// 				Type: req.body.Computer_2StorageDisk_3Type,
-// 				Size: req.body.Computer_2StorageDisk_3Size,
-// 			},
-// 			Disk_4: {
-// 				Type: req.body.Computer_2StorageDisk_4Type,
-// 				Size: req.body.Computer_2StorageDisk_4Size,
-// 			},
-// 		},
-// 		Optical_Drive: req.body.Computer_2Optical_Drive,
-// 		OS: {
-// 			Preloaded: req.body.Computer_2OSPreloaded,
-// 			Platform: req.body.Computer_2OSPlatform,
-// 			Version: req.body.Computer_2OSVersion,
-// 		},
-// 		Hostname: req.body.Computer_2Hostname,
-// 		Remarks: req.body.Computer_2Remarks,
-// 	},
-// 	Computer_3: {
-// 		IsUsed: req.body.Computer_3IsUsed,
-// 		Vendor: req.body.Computer_3Vendor,
-// 		Brand: req.body.Computer_3Brand,
-// 		Price: req.body.Computer_3Price,
-// 		Dates: {
-// 			Purchased: req.body.Computer_3DatesPurchased,
-// 			Warranty_End: req.body.Computer_3DatesWarranty_End,
-// 		},
-// 		Model: req.body.Computer_3Model,
-// 		Serial_Number: req.body.Computer_3Serial_Number,
-// 		Asset_ID: req.body.Computer_3Asset_ID,
-// 		PC_ID: req.body.Computer_3PC_ID,
-// 		CPU: {
-// 			Model: req.body.Computer_3CPUModel,
-// 			Speed: req.body.Computer_3CPUSpeed,
-// 		},
-// 		RAM: {
-// 			Size: req.body.Computer_3RAMSize,
-// 			Type: req.body.Computer_3RAMType,
-// 			Speed: req.body.Computer_3RAMSpeed,
-// 		},
-// 		Storage: {
-// 			Disk_1: {
-// 				Type: req.body.Computer_3StorageDisk_1Type,
-// 				Size: req.body.Computer_3StorageDisk_1Size,
-// 			},
-// 			Disk_2: {
-// 				Type: req.body.Computer_3StorageDisk_2Type,
-// 				Size: req.body.Computer_3StorageDisk_2Size,
-// 			},
-// 			Disk_3: {
-// 				Type: req.body.Computer_3StorageDisk_3Type,
-// 				Size: req.body.Computer_3StorageDisk_3Size,
-// 			},
-// 			Disk_4: {
-// 				Type: req.body.Computer_3StorageDisk_4Type,
-// 				Size: req.body.Computer_3StorageDisk_4Size,
-// 			},
-// 		},
-// 		Optical_Drive: req.body.Computer_3Optical_Drive,
-// 		OS: {
-// 			Preloaded: req.body.Computer_3OSPreloaded,
-// 			Platform: req.body.Computer_3OSPlatform,
-// 			Version: req.body.Computer_3OSVersion,
-// 		},
-// 		Hostname: req.body.Computer_3Hostname,
-// 		Remarks: req.body.Computer_3Remarks,
-// 	},
-// 	Monitor_1: {
-// 		IsUsed: req.body.Monitor_1IsUsed,
-// 		Vendor: req.body.Monitor_1Vendor,
-// 		Brand: req.body.Monitor_1Brand,
-// 		Price: req.body.Monitor_1Price,
-// 		Dates: {
-// 			Purchased: req.body.Monitor_1DatesPurchased,
-// 			Warranty_End: req.body.Monitor_1DatesWarranty_End,
-// 		},
-// 		Model: req.body.Monitor_1Model,
-// 		Serial_Number: req.body.Monitor_1Serial_Number,
-// 		Asset_ID: req.body.Monitor_1Asset_ID,
-// 		Monitor_ID: req.body.Monitor_1Monitor_ID,
-// 		Size: req.body.Monitor_1Size,
-// 		Resolution: req.body.Monitor_1Resolution,
-// 		Remarks: req.body.Monitor_1Remarks,
-// 	},
-// 	Monitor_2: {
-// 		IsUsed: req.body.Monitor_2IsUsed,
-// 		Vendor: req.body.Monitor_2Vendor,
-// 		Brand: req.body.Monitor_2Brand,
-// 		Price: req.body.Monitor_2Price,
-// 		Dates: {
-// 			Purchased: req.body.Monitor_2DatesPurchased,
-// 			Warranty_End: req.body.Monitor_2DatesWarranty_End,
-// 		},
-// 		Model: req.body.Monitor_2Model,
-// 		Serial_Number: req.body.Monitor_2Serial_Number,
-// 		Asset_ID: req.body.Monitor_2Asset_ID,
-// 		Monitor_ID: req.body.Monitor_2Monitor_ID,
-// 		Size: req.body.Monitor_2Size,
-// 		Resolution: req.body.Monitor_2Resolution,
-// 		Remarks: req.body.Monitor_2Remarks,
-// 	},
-// 	Monitor_3: {
-// 		IsUsed: req.body.Monitor_3IsUsed,
-// 		Vendor: req.body.Monitor_3Vendor,
-// 		Brand: req.body.Monitor_3Brand,
-// 		Price: req.body.Monitor_3Price,
-// 		Dates: {
-// 			Purchased: req.body.Monitor_3DatesPurchased,
-// 			Warranty_End: req.body.Monitor_3DatesWarranty_End,
-// 		},
-// 		Model: req.body.Monitor_3Model,
-// 		Serial_Number: req.body.Monitor_3Serial_Number,
-// 		Asset_ID: req.body.Monitor_3Asset_ID,
-// 		Monitor_ID: req.body.Monitor_3Monitor_ID,
-// 		Size: req.body.Monitor_3Size,
-// 		Resolution: req.body.Monitor_3Resolution,
-// 		Remarks: req.body.Monitor_3Remarks,
-// 	},
-// });
-
-// try {
-// 	// const newInventoryForm =
-// 	await inventoryform.save();
-// 	res.redirect(`/triage`);
-// } catch (err) {
-// 	console.error(err);
-// 	res.send("Error creating item");
-// }
