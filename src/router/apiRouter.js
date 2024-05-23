@@ -177,6 +177,15 @@ router.put(
 	},
 	saveAndRedirect("monitor")
 );
+router.get("/inventory/monitorlist", async (req, res, next) => {
+	try {
+		const items = await MonitorInventory.find();
+		res.render("main/data-editing/monitorlist", { monitors: items });
+	} catch (err) {
+		console.error(err);
+		res.send("Error fetching items");
+	}
+});
 
 function newAndRedirect(savetype) {
 	return async (req, res) => {
