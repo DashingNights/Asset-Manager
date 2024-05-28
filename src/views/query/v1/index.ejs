@@ -6,20 +6,134 @@
 		<title>Inventory Form</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 		<style>
-            .centered-text {
-                text-align: center;
-                
-            }
-            .blue {
-				background-color: rgb(172, 178, 255);
+			.centered-text {
+				text-align: center;
 			}
-        </style>
+			/* align select box to center of oval */
+			.centered {
+				transform: translate(12.5%, 50%);
+			}
+			.blue {
+				background-color: rgb(248, 248, 248);
+			}
+			.oval {
+				height: 50px;
+				width: 100px;
+				background-color: #9fffbf;
+				border-radius: 44%;
+			}
+			.nodegraph {
+				display: grid;
+				grid-template-columns: repeat(5, 1fr);
+				gap: 10px;
+			}
+			.nodepoint {
+				border-radius: 0.5em;
+				padding: 10px;
+				cursor: move;
+				background-color: red;
+			}
+			.nodepoint.over {
+				border: 3px dotted #666;
+			}
+		</style>
 	</head>
 	<body class="blue">
-        <div class="container">
-            <h3 class="centered-text">VBQ</h3>
+		<div class="container">
+			<h3 class="centered-text">VBQ</h3>
+			<form action="/query/v1" method="POST">
+				<div class="nodegraph">
+					<div draggable="true" class="datatype-nodepoint nodepoint">
+						<label for="datatype">Selection</label>
+						<div class="oval">
+							<select name="datatype" id="datatype" class="centered">
+								<option value="int">User</option>
+								<option value="float">PC</option>
+								<option value="string">Monitor</option>
+							</select>
+						</div>
+					</div>
+					<div draggable="true" class="datatype-nodepoint nodepoint">
+						<label for="datatype">Selection</label>
+						<div class="oval">
+							<select name="datatype" id="datatype" class="centered">
+								<option value="int">dada</option>
+								<option value="float">dadas</option>
+								<option value="string">Monitor</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</body>
+	<script>
+		function handleDragStart(e) {
+			this.style.opacity = "0.4";
+		}
 
-        </div>
-    </body>
-	<script></script>
+		function handleDragEnd(e) {
+			this.style.opacity = "1";
+		}
+
+		document.addEventListener("DOMContentLoaded", (event) => {
+			function handleDragStart(e) {
+				this.style.opacity = "0.4";
+			}
+
+			function handleDragEnd(e) {
+				this.style.opacity = "1";
+
+				items.forEach(function (item) {
+					item.classList.remove("over");
+				});
+			}
+
+			function handleDragOver(e) {
+				e.preventDefault();
+				return false;
+			}
+
+			function handleDragEnter(e) {
+				this.classList.add("over");
+			}
+
+			function handleDragLeave(e) {
+				this.classList.remove("over");
+			}
+			function handleDrop(e) {
+				e.stopPropagation(); // stops the browser from redirecting.
+				return false;
+			}
+			function handleDragStart(e) {
+				this.style.opacity = "0.4";
+
+				dragSrcEl = this;
+
+				e.dataTransfer.effectAllowed = "move";
+				e.dataTransfer.setData("text/html", this.innerHTML);
+			}
+			function handleDrop(e) {
+				e.stopPropagation();
+
+				if (dragSrcEl !== this) {
+					dragSrcEl.innerHTML = this.innerHTML;
+					this.innerHTML = e.dataTransfer.getData("text/html");
+				}
+
+				return false;
+			}
+
+			let items = document.querySelectorAll(".nodegraph .nodepoint");
+			items.forEach(function (item) {
+				item.addEventListener("dragstart", handleDragStart);
+				item.addEventListener("dragover", handleDragOver);
+				item.addEventListener("dragenter", handleDragEnter);
+				item.addEventListener("dragleave", handleDragLeave);
+				item.addEventListener("dragend", handleDragEnd);
+				item.addEventListener("drop", handleDrop);
+			});
+		});
+	</script>
 </html>
