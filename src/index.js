@@ -5,6 +5,7 @@ const loginrouter = require("./router/loginRouter");
 const path = require("path");
 const mainrouter = require("./router/Router");
 const apiRouter = require("./router/apiRouter");
+const queryRouter = require("./router/queryRouter");
 const app = express();
 const port = config.port;
 console.log(config.db.host);
@@ -41,5 +42,9 @@ app.get("/", (req, res) => {
 app.use("/login", loginrouter);
 app.use("/triage", mainrouter);
 app.use("/api", apiRouter);
+app.use("/query/v1", queryRouter);
+// app.get("/demo", (req, res) => {
+// 	res.render("query/demo");
+// });
 
 app.listen(port);
